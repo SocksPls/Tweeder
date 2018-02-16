@@ -1,25 +1,43 @@
 from pymongo import MongoClient
-# import json
 import bcrypt
-
-# try:
-#     with open('config.json') as f:
-#         config = json.loads(f.read())
-# except FileNotFounddanger:
-#     print("Config file does not exist!",
-#           "Please copy and configure config.local.json to config.json in the root directory.")
-#     exit()
-# client = MongoClient(config['database'])
-
 
 client = MongoClient()
 accounts_db = client.tweeder.accounts
 
 
-def create_account(email, username, password):
+def get_display_name(username):
+    return accounts_db.find_one({'username': username})['displayname']
 
+
+def is_verified(username):
+    return accounts_db.find_one({'username': username})['verified']
+
+
+def account_exists(username):
+    return bool(accounts_db.find_one({'username': username}))
+
+
+def account_details(username):
+    return accounts_db.find_one({'username': username})
+
+
+def validate_username(username):
+    allowed_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
+    for char in username:
+        if char not in allowed_chars:
+            return False
+    return True
+
+
+def create_account(email, username, password):
     displayname = username
     username = username.lower()
+    if not validate_username(username):
+        return {
+            'status': 'danger',
+            'code': 6,
+            'message': 'Username can only contain numbers, letters, and underscores'
+        }
 
     if accounts_db.find_one({'username': username}):
 
@@ -64,7 +82,10 @@ def create_account(email, username, password):
             'username': username,
             'displayname': displayname,
             'email': email,
-            'password': hashed_password
+            'password': hashed_password,
+            'verified': False,
+            'following': [],
+            'profile': {}
         })
 
         return {
@@ -75,7 +96,6 @@ def create_account(email, username, password):
 
 
 def login(username, password):
-
     username = username.lower()
 
     # Check that account exists, either with username or email based login
@@ -108,4 +128,19 @@ def login(username, password):
             'code': 2,
             'message': 'Incorrect password'
         }
-    
+
+
+def follow(follower, following):
+    following_doc = accounts_db.find_one({'username': following.lower()})
+    following_id = following_doc['_id']
+
+    accounts_db.update_one({'username': follower.lower()},
+                           {'$push': {'following': following_id}})
+
+
+def unfollow(follower, following):
+    following_doc = accounts_db.find_one({'username': following.lower()})
+    following_id = following_doc['_id']
+
+    accounts_db.update_one({'username': follower.lower()},
+                           {'$pull': {'following': following_id}})
