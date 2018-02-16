@@ -1,10 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'layout.html' %}
+{% block nav_profile %} active {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="jumbotron">
+            <h1>{% if user.verified %} <i class="fas fa-shield-check" alt="Verified"></i> {% endif %}{{ user.displayname }} <small>on Tweeder</small></h1>
+            <h2>
+                {% if user.profile.bio %}
+                {{ user.profile.bio }}
+                {% else %}
+                Tweeder user since 1984
+                {% endif %}
+            </h2>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-md-4">
+                <div class="card">
+                    <h4 class="card-header">{{ user.displayname }}'s profile</h4>
+                    <div class="card-body">
+                        {% if user.profile.location %} <i class="far fa-fw fa-map-marker"></i> {{ user.profile.location }} <br>{% endif %}
+                        {% if user.profile.gender %} <i class="far fa-fw fa-transgender-alt"></i> {{ user.profile.gender }} {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-8" style="float: right;">
+                {% if posts %}
+                    {% for post in posts if not post.hidden %}
+                        <div class="card" style="word-wrap: break-word; margin-bottom: 16px; width: 100%;">
+                            <div class="card-header"><b>{{ post.poster }}</b> at {{ post.timePosted.strftime('%Y-%m-%d %-H:%M') }} {% if logged_in == post.poster %} <span style="float: right"><a href="/reply/{{ post._id }}" class="btn btn-primary btn-sm"><i class="far fa-reply"></i></a> <a href="/delete/{{ post._id }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a></span>{% endif %}</div>
+                            <div class="card-body">
+                                {{ post.content }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <b>No posts found!</b>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
