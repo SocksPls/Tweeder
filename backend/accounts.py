@@ -21,6 +21,19 @@ def account_details(username):
     return accounts_db.find_one({'username': username})
 
 
+def username_for_email(email):
+    return accounts_db.find_one({'email': email})['username']
+
+
+def get_profile(username):
+    return accounts_db.find_one({'username': username})['profile']
+
+
+def update_profile(username, details):
+    accounts_db.update_one({'username': username},
+                           {'$set': {'profile': details}})
+
+
 def validate_username(username):
     allowed_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
     for char in username:
