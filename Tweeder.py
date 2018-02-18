@@ -95,7 +95,7 @@ def timeline_view():
 @app.route('/global', methods=['GET'])
 def global_timeline():
     logged_in = True if 'username' in session.keys() else False
-    return render_template('timeline.html', logged_in=logged_in, posts=timeline.global_timeline())
+    return render_template('global.html', logged_in=logged_in, posts=timeline.global_timeline())
 
 
 @app.route('/settings', methods=['GET', 'POST'])
