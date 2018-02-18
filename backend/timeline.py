@@ -25,7 +25,7 @@ def post_status(username, content, private=False, replyTo=False, location=False)
         'likes': [],
         'reposts': [],
         'replies': [],
-        'replyTo': ObjectId(replyTo),
+        'replyTo': ObjectId(replyTo) if replyTo else False,
         'hashtags': [x for x in content.split() if x.startswith("#")],
         'location': False or location,
         'private': False or private,
