@@ -13,8 +13,8 @@ def post_status(username, content, private=False, replyTo=False, location=False)
     accounts_mentioned = []
     for word in content:
         if word.startswith("@"):
-            if accounts_db.find({'username': username.lower()}).count > 0:
-                accounts_mentioned.append()
+            if accounts_db.find({'username': username.lower()}).count() > 0:
+                accounts_mentioned.append(word[1:])
 
     status = {
         'isRepost': False,
@@ -25,7 +25,7 @@ def post_status(username, content, private=False, replyTo=False, location=False)
         'likes': [],
         'reposts': [],
         'replies': [],
-        'replyTo': False or replyTo,
+        'replyTo': ObjectId(replyTo),
         'hashtags': [x for x in content.split() if x.startswith("#")],
         'location': False or location,
         'private': False or private,

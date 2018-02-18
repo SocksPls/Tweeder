@@ -137,7 +137,8 @@ def reply_to_post(post_id):
     if request.method == "GET":
         return render_template('reply.html', logged_in=logged_in, reply_to=timeline.post_details(post_id))
     elif request.method == "POST":
-        pass
+        timeline.post_status(logged_in, request.form['status'], replyTo=post_id)
+        return redirect(url_for('profile'))
 
 
 if __name__ == '__main__':
