@@ -8,8 +8,8 @@
                     {{ reply_to.content }}
                 </div>
                 <div class="card-footer">
-                    <form method="POST" action="/reply/{{ reply_to._id }}" class="form-inline">
-                        <input type="text" name="status" class="form-inline form-control" value="@{{ reply_to.poster }} " autofocus onfocus="var temp_value=this.value; this.value=''; this.value=temp_value"/>
+                    <form method="POST" action="/reply/{{ reply_to._id }}" class="input-group">
+                        <input type="text" name="status" style="margin-right: 16px;" class="form-control" value="@{{ reply_to.poster }} " autofocus onfocus="var temp_value=this.value; this.value=''; this.value=temp_value"/> 
                         <input type="submit" class="btn btn-primary" value="Do Post" />
                     </form>
                 </div>
