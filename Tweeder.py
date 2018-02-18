@@ -66,7 +66,7 @@ def profile(name=None):
     name = name.lower()
     logged_in = accounts.get_display_name(session['username']) if 'username' in session.keys() else False
     posts = list(timeline.user_posts_by_username(name))
-    return render_template('profile.html', user=accounts.account_details(name), logged_in=logged_in, posts=posts)
+    return render_template('profile.html', user=accounts.account_details(name), logged_in=logged_in, following=accounts.is_following(logged_in, name), posts=posts)
 
 
 @app.route('/logout')
@@ -140,6 +140,26 @@ def reply_to_post(post_id):
         timeline.post_status(logged_in, request.form['status'], replyTo=post_id)
         return redirect(url_for('profile'))
 
+@app.route("/follow/<user>", methods=["GET", "POST"])
+def follow(user):
+    if 'username' not in session.keys(): return redirect(url_for('login'))
+    logged_in = session['username']
+    if request.method == "POST":
+        accounts.follow(logged_in, user)
+        return redirect(str("/profile/" + user))
+    else:
+        pass
+
+@app.route("/unfollow/<user>", methods=["GET", "POST"])
+def unfollow(user):
+    if 'username' not in session.keys(): return redirect(url_for('login'))
+    logged_in = session['username']
+    if request.method == "POST":
+        accounts.unfollow(logged_in, user)
+        return redirect(str("/profile/" + user))
+    else:
+        pass
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -15,13 +15,16 @@
 
         <div class="row">
             <div class="col-xs-6 col-md-4">
-                <div class="card">
-                    <h4 class="card-header">{{ user.displayname }}'s profile</h4>
-                    <div class="card-body">
-                        {% if user.profile.location %} <i class="far fa-fw fa-map-marker"></i> {{ user.profile.location }} <br>{% endif %}
-                        {% if user.profile.gender %} <i class="far fa-fw fa-transgender-alt"></i> {{ user.profile.gender }} {% endif %}
-                    </div>
+              <div class="card">
+		<div class="card-header">
+                  <h4 style="display: inline">{{ user.displayname }}' Profile</h4>
+		  {% if following %}<form action="/unfollow/{{ user.displayname }}" method="POST" style="display: inline; float: right;"><input type="submit" value="Unfollow" class="btn btn-outline-danger btn-sm"/></form> {% else %}<form action="/follow/{{ user.displayname }}" method="POST" style="display:inline; float: right;"><input type="submit" value="Follow" class="btn btn-outline-primary btn-sm"/></form>{% endif %}
+		</div>
+                <div class="card-body">
+                  {% if user.profile.location %} <i class="far fa-fw fa-map-marker"></i> {{ user.profile.location }} <br>{% endif %}
+                  {% if user.profile.gender %} <i class="far fa-fw fa-transgender-alt"></i> {{ user.profile.gender }} {% endif %}
                 </div>
+              </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-8" style="float: right;">
                 {% if posts %}
