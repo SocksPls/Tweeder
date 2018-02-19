@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block content %}
     <div class="container">
-        <h1>Settings for SocksPls</h1><hr />
+        <h1>Settings for {{ logged_in }}</h1><hr />
         <form method="POST" action="/settings" class="col-lg-6">
             <div class="form-group row">
                 <h2>Profile Fields</h2>

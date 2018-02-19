@@ -102,7 +102,7 @@ def global_timeline():
 def user_settings():
     if request.method == "GET":
         if 'username' in session.keys():
-            logged_in = True
+            logged_in = accounts.account_details(session['username'])['displayname']
             profile = accounts.get_profile(session['username'])
             return render_template('settings.html', logged_in=logged_in, profile=profile)
         else:
@@ -140,6 +140,7 @@ def reply_to_post(post_id):
         timeline.post_status(logged_in, request.form['status'], replyTo=post_id)
         return redirect(url_for('profile'))
 
+
 @app.route("/follow/<user>", methods=["GET", "POST"])
 def follow(user):
     if 'username' not in session.keys(): return redirect(url_for('login'))
@@ -150,6 +151,7 @@ def follow(user):
     else:
         pass
 
+
 @app.route("/unfollow/<user>", methods=["GET", "POST"])
 def unfollow(user):
     if 'username' not in session.keys(): return redirect(url_for('login'))
@@ -159,7 +161,7 @@ def unfollow(user):
         return redirect(str("/profile/" + user))
     else:
         pass
-    
+
 
 if __name__ == '__main__':
     app.run(debug=True)
