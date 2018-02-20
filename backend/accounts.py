@@ -12,8 +12,10 @@ def get_display_name(username):
 def is_verified(username):
     return accounts_db.find_one({'username': username})['verified']
 
+
 def is_following(follower, following):
     return bool( accounts_db.find_one({'username': following.lower()})['_id'] in accounts_db.find_one({'username': follower.lower()})['following'] )
+
 
 def account_exists(username):
     return bool(accounts_db.find_one({'username': username}))
