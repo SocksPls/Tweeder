@@ -7,6 +7,8 @@ accounts_db = db.accounts
 accounts_db.update_many({}, {
     '$push': {
         "verified": False,
-        "following": []
+        "following": [],
+        "profile": {}
     }
 }, upsert=True)
+
