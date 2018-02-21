@@ -66,7 +66,11 @@ def profile(name=None):
     name = name.lower()
     logged_in = accounts.get_display_name(session['username']) if 'username' in session.keys() else False
     posts = list(timeline.user_posts_by_username(name))
-    return render_template('profile.html', user=accounts.account_details(name), logged_in=logged_in, following=accounts.is_following(logged_in, name), posts=posts)
+    return render_template('profile.html',
+                           user=accounts.account_details(name),
+                           logged_in=logged_in, theme=accounts.get_theme(logged_in),
+                           following=accounts.is_following(logged_in, name),
+                           posts=posts)
 
 
 @app.route('/logout')
@@ -103,8 +107,11 @@ def user_settings():
     if request.method == "GET":
         if 'username' in session.keys():
             logged_in = accounts.account_details(session['username'])['displayname']
-            profile = accounts.get_profile(session['username'])
-            return render_template('settings.html', logged_in=logged_in, profile=profile)
+            account = accounts.account_details(session['username'])
+            return render_template('settings.html',
+                                   logged_in=logged_in,
+                                   account=account,
+                                   theme=accounts.get_theme(session['username'].lower()))
         else:
             return redirect(url_for('login'))
     elif request.method == "POST":
@@ -115,6 +122,10 @@ def user_settings():
             'gender': request.form['gender'],
             'location': request.form['location']
         }
+        if request.form['theme'] == "darkly":
+            accounts.set_theme(session['username'].lower(), "darkly")
+        elif request.form['theme'] == "default":
+            accounts.set_theme(session['username'].lower(), "default")
         username = session['username']
         accounts.update_profile(username, profile)
         return redirect(url_for('profile'))
