@@ -66,7 +66,11 @@ def profile(name=None):
     name = name.lower()
     logged_in = accounts.get_display_name(session['username']) if 'username' in session.keys() else False
     posts = list(timeline.user_posts_by_username(name))
-    return render_template('profile.html', user=accounts.account_details(name), logged_in=logged_in, darktheme=accounts.get_dark_theme(logged_in), following=accounts.is_following(logged_in, name), posts=posts)
+    return render_template('profile.html',
+                           user=accounts.account_details(name),
+                           logged_in=logged_in, darktheme=accounts.get_dark_theme(logged_in),
+                           following=accounts.is_following(logged_in, name),
+                           posts=posts)
 
 
 @app.route('/logout')
