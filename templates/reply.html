@@ -2,14 +2,14 @@
 {% block content %}
     <div class="container">
         <div class="row">
-        {% if reply_parent %}
-                <div class="card" style="word-wrap: break-word; margin-bottom: 16px; width: 100%;">
-                    <div class="card-header"><b>{{ reply_parent.poster }}</b> at {{ reply_parent.timePosted.strftime('%Y-%m-%d %-H:%M') }}</div>
-                    <div class="card-body">
-                        {{ reply_parent.content }}
-                    </div>
-                </div>
-        {% endif %}
+        {% for post in posts %}
+            <div class="card" style="word-wrap: brea-word; margin-bottom: 16px; width: 100%;">
+	        <div class="card-header"><b>{{ post.poster }}</b> at {{ post.timePosted.strftime('%Y-%m-%d %-H:%M') }}</div>
+	        <div class="card-body">
+		    {{ post.content }
+		</div>
+	    </div>   
+        {% endfor %}
 
         <div class="card" style="word-wrap: break-word; margin-bottom: 16px; width: 100%;">
             <div class="card-header">Replying to <b>{{ reply_to.poster }}</b> at {{ reply_to.timePosted.strftime('%Y-%m-%d %-H:%M') }}</div>

@@ -67,3 +67,11 @@ def get_parent(post_id):
         return timeline_db.find_one({"_id": timeline_db.find_one({"_id": ObjectId(post_id)})['replyTo']})
     else:
         return False
+
+def get_full_replies(post_id):
+    replies = []
+    replies.append(post_details(post_id))
+    while get_parent(replies[-1]["_id"]):
+        print(replies[-1])
+        replies.append(get_parent(post_id))
+    return replies[::-1]
