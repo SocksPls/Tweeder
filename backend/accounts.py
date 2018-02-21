@@ -5,6 +5,16 @@ client = MongoClient()
 accounts_db = client.tweeder.accounts
 
 
+def get_dark_theme(username):
+    username = username.lower()
+    return accounts_db.find_one({"username": username})['darktheme']
+
+
+def set_dark_theme(username, value):
+    username = username.lower()
+    accounts_db.update_one({'username': username}, {"$set": {"darktheme": value}})
+
+
 def get_display_name(username):
     return accounts_db.find_one({'username': username})['displayname']
 
