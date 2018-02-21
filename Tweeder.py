@@ -68,7 +68,7 @@ def profile(name=None):
     posts = list(timeline.user_posts_by_username(name))
     return render_template('profile.html',
                            user=accounts.account_details(name),
-                           logged_in=logged_in, darktheme=accounts.get_dark_theme(logged_in),
+                           logged_in=logged_in, theme=accounts.get_theme(logged_in),
                            following=accounts.is_following(logged_in, name),
                            posts=posts)
 
@@ -108,7 +108,10 @@ def user_settings():
         if 'username' in session.keys():
             logged_in = accounts.account_details(session['username'])['displayname']
             account = accounts.account_details(session['username'])
-            return render_template('settings.html', logged_in=logged_in, account=account)
+            return render_template('settings.html',
+                                   logged_in=logged_in,
+                                   account=account,
+                                   theme=accounts.get_theme(session['username'].lower()))
         else:
             return redirect(url_for('login'))
     elif request.method == "POST":
@@ -119,10 +122,12 @@ def user_settings():
             'gender': request.form['gender'],
             'location': request.form['location']
         }
-        darktheme = request.form['darktheme']
+        if request.form['theme'] == "darkly":
+            accounts.set_theme(session['username'].lower(), "darkly")
+        elif request.form['theme'] == "default":
+            accounts.set_theme(session['username'].lower(), "default")
         username = session['username']
         accounts.update_profile(username, profile)
-        accounts.set_dark_theme(username, darktheme)
         return redirect(url_for('profile'))
 
 
