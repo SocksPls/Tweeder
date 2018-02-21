@@ -122,10 +122,7 @@ def user_settings():
             'gender': request.form['gender'],
             'location': request.form['location']
         }
-        if request.form['theme'] == "darkly":
-            accounts.set_theme(session['username'].lower(), "darkly")
-        elif request.form['theme'] == "default":
-            accounts.set_theme(session['username'].lower(), "default")
+        accounts.set_theme(session['username'].lower(), request.form['theme'])
         username = session['username']
         accounts.update_profile(username, profile)
         return redirect(url_for('profile'))
