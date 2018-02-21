@@ -60,3 +60,10 @@ def post_details(post_id):
 def delete_post(post_id):
     timeline_db.update_one({"_id": ObjectId(post_id)},
                            {'$set': {'hidden': True}})
+
+
+def get_parent(post_id):
+    if timeline_db.find_one({"_id": timeline_db.find_one({"_id": ObjectId(post_id)})['replyTo']}):
+        return timeline_db.find_one({"_id": timeline_db.find_one({"_id": ObjectId(post_id)})['replyTo']})
+    else:
+        return False

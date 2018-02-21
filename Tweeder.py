@@ -135,7 +135,10 @@ def reply_to_post(post_id):
     if 'username' not in session.keys(): return redirect(url_for('login'))
     logged_in = session['username'] if ('username' in session.keys()) else False
     if request.method == "GET":
-        return render_template('reply.html', logged_in=logged_in, reply_to=timeline.post_details(post_id))
+        return render_template('reply.html',
+                               logged_in=logged_in,
+                               reply_to=timeline.post_details(post_id),
+                               reply_parent=timeline.get_parent(post_id))
     elif request.method == "POST":
         timeline.post_status(logged_in, request.form['status'], replyTo=post_id)
         return redirect(url_for('profile'))
