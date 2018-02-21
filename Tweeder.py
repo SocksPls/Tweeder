@@ -107,8 +107,8 @@ def user_settings():
     if request.method == "GET":
         if 'username' in session.keys():
             logged_in = accounts.account_details(session['username'])['displayname']
-            profile = accounts.get_profile(session['username'])
-            return render_template('settings.html', logged_in=logged_in, profile=profile)
+            account = accounts.account_details(session['username'])
+            return render_template('settings.html', logged_in=logged_in, account=account)
         else:
             return redirect(url_for('login'))
     elif request.method == "POST":

@@ -10,26 +10,26 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1"><i class="far fa-fw fa-user"></i></span>
                     </div>
-                    <input type="text" name="bio" class="form-control" placeholder="Bio" aria-describedby="basic-addon1" value="{{ profile.bio }}">
+                    <input type="text" name="bio" class="form-control" placeholder="Bio" aria-describedby="basic-addon1" value="{{ account.profile.bio }}">
                 </div>
 
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1"><i class="far fa-fw fa-map-marker"></i></span>
                     </div>
-                    <input type="text" name="location" class="form-control" placeholder="Location" aria-describedby="basic-addon1" value="{{ profile.location }}">
+                    <input type="text" name="location" class="form-control" placeholder="Location" aria-describedby="basic-addon1" value="{{ account.profile.location }}">
                 </div>
 
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1"><i class="far fa-fw fa-transgender-alt"></i></span>
                     </div>
-                    <input type="text" name="gender" class="form-control" placeholder="Gender" aria-describedby="basic-addon1" value="{{ profile.gender }}">
+                    <input type="text" name="gender" class="form-control" placeholder="Gender" aria-describedby="basic-addon1" value="{{ account.profile.gender }}">
                 </div>
 
 		<div class="input-group mb-3">
 		  <div class="custom-control custom-checkbox">
-		    <input type="checkbox" class="custom-control-input" id="customCheck1" name="darktheme">
+		    <input type="checkbox" class="custom-control-input" id="customCheck1" name="darktheme" {% if account.darktheme %}checked{% endif %}>
 		    <label class="custom-control-label" for="customCheck1">Use Dark Theme</label>
 		  </div>
 		</div>

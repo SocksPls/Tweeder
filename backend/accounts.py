@@ -32,7 +32,7 @@ def account_exists(username):
 
 
 def account_details(username):
-    return accounts_db.find_one({'username': username})
+    return accounts_db.find_one({'username': username.lower()})
 
 
 def username_for_email(email):
