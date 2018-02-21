@@ -68,7 +68,8 @@ def profile(name=None):
     posts = list(timeline.user_posts_by_username(name))
     return render_template('profile.html',
                            user=accounts.account_details(name),
-                           logged_in=logged_in, theme=accounts.get_theme(logged_in),
+                           logged_in=logged_in,
+                           theme=accounts.get_theme(logged_in),
                            following=accounts.is_following(logged_in, name),
                            posts=posts)
 
@@ -93,13 +94,20 @@ def timeline_view():
     else:
         return redirect(url_for('login'))
     posts = timeline.timeline_for_user(session['username'])
-    return render_template('timeline.html', logged_in=logged_in, posts=posts)
+    return render_template('timeline.html',
+                           logged_in=logged_in,
+                           posts=posts,
+                           theme=accounts.get_theme(logged_in))
 
 
 @app.route('/global', methods=['GET'])
 def global_timeline():
-    logged_in = True if 'username' in session.keys() else False
-    return render_template('global.html', logged_in=logged_in, posts=timeline.global_timeline())
+    if 'username' not in session.keys(): logged_in=False
+    else: logged_in = accounts.get_display_name(session['username'])
+    return render_template('global.html',
+                           logged_in=logged_in,
+                           posts=timeline.global_timeline(),
+                           theme=accounts.get_theme(logged_in))
 
 
 @app.route('/settings', methods=['GET', 'POST'])
@@ -143,7 +151,10 @@ def reply_to_post(post_id):
     if 'username' not in session.keys(): return redirect(url_for('login'))
     logged_in = session['username'] if ('username' in session.keys()) else False
     if request.method == "GET":
-        return render_template('reply.html', logged_in=logged_in, reply_to=timeline.post_details(post_id))
+        return render_template('reply.html',
+                               logged_in=logged_in,
+                               reply_to=timeline.post_details(post_id),
+                               theme=accounts.get_theme(logged_in))
     elif request.method == "POST":
         timeline.post_status(logged_in, request.form['status'], replyTo=post_id)
         return redirect(url_for('profile'))
