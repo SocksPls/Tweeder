@@ -30,6 +30,8 @@ def login():
                                    status=login_attempt['status'],
                                    message=login_attempt['message'])
     elif request.method == 'GET':
+        if 'username' in session.keys():
+            return redirect(url_for('logout'))
         return render_template('login.html')
 
 
@@ -51,6 +53,8 @@ def register():
                                    status="danger",
                                    message="Passwords do not match!")
     elif request.method == 'GET':
+        if 'username' in session.keys():
+            return redirect(url_for('logout'))
         return render_template('register.html')
 
 
