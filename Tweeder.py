@@ -148,8 +148,8 @@ def reply_to_post(post_id):
     if request.method == "GET":
         return render_template('reply.html',
                                logged_in=logged_in,
-                               reply_to=timeline.post_details(post_id),
-                               reply_parent=timeline.get_parent(post_id))
+                               posts=timeline.get_full_replies(post_id)[:-1],
+                               reply_to=timeline.post_details(post_id))
     elif request.method == "POST":
         timeline.post_status(logged_in, request.form['status'], replyTo=post_id)
         return redirect(url_for('profile'))
