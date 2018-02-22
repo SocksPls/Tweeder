@@ -74,4 +74,5 @@ def get_full_replies(post_id):
     while get_parent(replies[-1]["_id"]):
         print(replies[-1])
         replies.append(get_parent(post_id))
+        post_id = get_parent(post_id)['_id']
     return replies[::-1]
