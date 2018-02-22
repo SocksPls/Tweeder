@@ -177,5 +177,14 @@ def unfollow(user):
         pass
 
 
+@app.route("/view/<post_id>", methods=["GET"])
+def view_thread(post_id):
+    logged_in = session['username'] if ('username' in session.keys()) else False
+    posts = timeline.get_full_replies(post_id)
+    return render_template('view.html',
+                           logged_in=logged_in,
+                           posts=posts)
+
+
 if __name__ == '__main__':
     app.run(host="127.0.0.1", debug=True)
