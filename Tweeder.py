@@ -22,7 +22,7 @@ def login():
         login_attempt = accounts.login(username, password)
         if login_attempt['status'] == 'success':
             session['username'] = username.lower() if "@" not in username else accounts.username_for_email(username)
-            if request.form['remember']:
+            if 'remember' in request.form.keys():
                 session.permanent = True
             return redirect(url_for('profile'))
         else:
