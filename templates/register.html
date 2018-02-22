@@ -1,6 +1,9 @@
 {% extends 'layout.html' %}
 {% block content %}
     <div class="container">
+        {% if status %}
+            <div class="alert alert-{{ status }}" role="alert">{{ message }}</div>
+        {% endif %}
         <div class="card col-xl-6 col-md-8 col-sm-10 col-xs-12 mx-auto">
             <div class="card-body">
                 <h2 class="mx-auto" style="display:inline;">Register for Tweeder</h2>
