@@ -159,7 +159,7 @@ def unfollow(user):
         return redirect(str("/profile/" + user))
     else:
         pass
-    
+
 
 if __name__ == '__main__':
     app.run(debug=True)
