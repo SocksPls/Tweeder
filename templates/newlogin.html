@@ -1,4 +1,17 @@
 {% extends 'layout.html' %}
 {% block content %}
+    <div class="container">
+        <div class="card col-xl-6 col-md-8 col-sm-10 col-xs-12 mx-auto">
+            <div class="card-body">
+                <h2 class="mx-auto" style="display:inline;">Login to Tweeder</h2>
+                <a href="/register" class="btn btn-outline-success" style="float:right;">Need an account?</a>
+                <form method="POST" action="/login" class="form-group">
+                    <input type="text" class="form-control" style="margin-bottom: 12px; margin-top: 12px; height:45px;" tabindex="1" placeholder="Username or email address" />
+                    <input type="password" class="form-control" style="margin-bottom: 12px; height:45px;" tabindex="2" placeholder="Password" />
+                    <input type="submit" class="form-control btn btn-primary" />
+                </form>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
