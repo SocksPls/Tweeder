@@ -68,6 +68,11 @@ def get_parent(post_id):
     else:
         return False
 
+
+def get_poster(post_id):
+    return timeline_db.find_one({"_id": ObjectId(post_id)})['poster']
+
+
 def get_full_replies(post_id):
     replies = []
     replies.append(post_details(post_id))
@@ -76,3 +81,13 @@ def get_full_replies(post_id):
         replies.append(get_parent(post_id))
         post_id = get_parent(post_id)['_id']
     return replies[::-1]
+
+
+def like_post(post_id, user):
+    timeline_db.update_one({"_id": ObjectId(post_id)},
+                           {"$push": {"likes": user.lower()}})
+
+
+def unlike_post(post_id, user):
+    timeline_db.update_one({"_id": ObjectId(post_id)},
+                           {"$pull": {"likes": user.lower()}})

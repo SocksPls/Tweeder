@@ -190,5 +190,25 @@ def view_thread(post_id):
                            posts=posts)
 
 
+@app.route("/like/<post_id>", methods=["GET", "POST"])
+def like_post(post_id):
+    if 'username' not in session.keys(): return redirect(url_for('login'))
+    logged_in = session['username']
+    if request.method == "POST":
+        timeline.like_post(post_id, logged_in)
+        return redirect(str('/view/' + post_id))
+    elif request.method == "GET":
+        pass
+
+@app.route("/unlike/<post_id>", methods=["GET", "POST"])
+def unlike_post(post_id):
+    if 'username' not in session.keys(): return redirect(url_for('login'))
+    logged_in = session['username']
+    if request.method == "POST":
+        timeline.unlike_post(post_id, logged_in)
+        return redirect(str('/view/' + post_id))
+    elif request.method == "GET":
+        pass
+
 if __name__ == '__main__':
     app.run(host="127.0.0.1", debug=True)
