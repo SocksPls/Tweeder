@@ -196,7 +196,7 @@ def like_post(post_id):
     logged_in = session['username']
     if request.method == "POST":
         timeline.like_post(post_id, logged_in)
-        return redirect(str('/view/' + post_id))
+        return redirect(request.referrer)
     elif request.method == "GET":
         pass
 
@@ -206,7 +206,7 @@ def unlike_post(post_id):
     logged_in = session['username']
     if request.method == "POST":
         timeline.unlike_post(post_id, logged_in)
-        return redirect(str('/view/' + post_id))
+        return redirect(request.referrer)
     elif request.method == "GET":
         pass
 
