@@ -87,7 +87,7 @@ def logout():
 def new_post():
     username = session['username']
     timeline.post_status(username, request.form['status'])
-    return redirect(url_for('profile'))
+    return redirect(request.referrer)
 
 
 @app.route('/timeline', methods=['GET'])
@@ -132,7 +132,7 @@ def user_settings():
             accounts.set_theme(session['username'].lower(), "default")
         username = session['username']
         accounts.update_profile(username, profile)
-        return redirect(url_for('profile'))
+        return redirect(request.referrer)
 
 
 @app.route("/delete/<post_id>", methods=['GET'])
