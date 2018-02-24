@@ -112,7 +112,8 @@ def create_account(email, username, password):
             'password': hashed_password,
             'verified': False,
             'following': [],
-            'profile': {}
+            'profile': {},
+            'theme': 'default',
         })
 
         return {
