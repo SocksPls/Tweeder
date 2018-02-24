@@ -84,10 +84,14 @@ def get_full_replies(post_id):
 
 
 def like_post(post_id, user):
-    timeline_db.update_one({"_id": ObjectId(post_id)},
-                           {"$push": {"likes": user.lower()}})
+    if timeline_db.find_one({"_id": ObjectId(post_id), "likes": user}):
+        pass
+    else:
+        timeline_db.update_one({"_id": ObjectId(post_id)},
+                               {"$push": {"likes": user.lower()}})
 
 
 def unlike_post(post_id, user):
-    timeline_db.update_one({"_id": ObjectId(post_id)},
-                           {"$pull": {"likes": user.lower()}})
+    if timeline_db.find_one({"_id": ObjectId(post_id), "likes": user}):
+        timeline_db.update_one({"_id": ObjectId(post_id)},
+                               {"$pull": {"likes": user.lower()}})
