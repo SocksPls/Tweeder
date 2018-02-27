@@ -18,11 +18,11 @@
               <a class="navbar-brand" href="#">Tweeder</a>
             </div>
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item {% block nav_timeline %}{% endblock %}"><a href="/timeline" class="nav-link">Timeline</a></li>
-                <li class="nav-item {% block nav_profile %}{% endblock %}"><a href="/profile" class="nav-link">My Profile</a></li>
-                <li class="nav-item {% block nav_global %}{% endblock %}"><a href="/global" class="nav-link">Global Timeline</a></li>
-                <li class="nav-item {% block nav_messages %}{% endblock %}"><a href="/messages" class="nav-link">Messages</a></li>
-                <li class="nav-item"><a href="#" data-toggle="modal" data-target="#newPost" class="nav-link">New Post</a></li>
+                <li class="nav-item {% block nav_timeline %}{% endblock %}"><a href="/timeline" class="nav-link"><i class="fas fa-home"></i> Timeline</a></li>
+                <li class="nav-item {% block nav_profile %}{% endblock %}"><a href="/profile" class="nav-link"><i class="fas fa-user"></i> My Profile</a></li>
+                <li class="nav-item {% block nav_global %}{% endblock %}"><a href="/global" class="nav-link"><i class="fas fa-globe"></i> Global Timeline</a></li>
+                <li class="nav-item {% block nav_messages %}{% endblock %}"><a href="/messages" class="nav-link"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li class="nav-item"><a href="#" data-toggle="modal" data-target="#newPost" class="nav-link"><i class="fas fa-pencil"></i> New Post</a></li>
             </ul>
 
             {% if logged_in %}
