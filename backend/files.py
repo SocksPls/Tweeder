@@ -18,6 +18,8 @@ def get_file(oid):
 
 
 def upload_file(file_to_upload):
+    if file_to_upload.filename == '':
+        return False
     filename = secure_filename(file_to_upload.filename)
     obj = files_db.put(file_to_upload, content_type=file_to_upload.content_type, filename=filename)
     return obj
