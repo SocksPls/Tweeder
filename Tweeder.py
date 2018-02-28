@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from backend import accounts, timeline
+from flask import Flask, render_template, request, redirect, url_for, session, make_response, abort
+from backend import accounts, timeline, files
 
 app = Flask(__name__)
 app.secret_key = "eVZ4EmVK70iETb03KqDAXV5sBHb3T73t"
@@ -215,6 +215,15 @@ def unlike_post(post_id):
         return redirect(request.referrer)
     elif request.method == "GET":
         pass
+
+
+@app.route("/files/<oid>", methods=['GET'])
+def get_file(oid):
+    fl = files.get_file(oid)
+    if not fl: return abort(404)
+    response = make_response(fl.read())
+    response.mimetype = fl.content_type
+    return response
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", debug=True)
