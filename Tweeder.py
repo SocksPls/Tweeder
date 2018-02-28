@@ -127,6 +127,8 @@ def user_settings():
         else:
             return redirect(url_for('login'))
     elif request.method == "POST":
+        print(request.files)
+        print(request.form)
         if 'username' not in session.keys():
             return redirect(url_for('login'))
         profile = {
@@ -134,6 +136,9 @@ def user_settings():
             'gender': request.form['gender'],
             'location': request.form['location']
         }
+        if 'profile-pic' in request.files.keys():
+            profile_pic = files.upload_file(request.files['profile-pic'])
+            profile['profile-pic'] = profile_pic
         accounts.set_theme(session['username'].lower(), request.form['theme'])
         username = session['username']
         accounts.update_profile(username, profile)
@@ -220,10 +225,11 @@ def unlike_post(post_id):
 @app.route("/files/<oid>", methods=['GET'])
 def get_file(oid):
     fl = files.get_file(oid)
-    if not fl: return abort(404)
+    if not fl: return "File not found"
     response = make_response(fl.read())
     response.mimetype = fl.content_type
     return response
+
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", debug=True)
