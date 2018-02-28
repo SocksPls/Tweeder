@@ -137,8 +137,8 @@ def user_settings():
             'location': request.form['location']
         }
         if 'profile-pic' in request.files.keys():
-            profile_pic = files.upload_file(request.files['profile-pic'])
-            profile['profile-pic'] = profile_pic
+            profile_pic = files.upload_file(request.files['profile_pic'])
+            profile['profile_pic'] = profile_pic
         accounts.set_theme(session['username'].lower(), request.form['theme'])
         username = session['username']
         accounts.update_profile(username, profile)
