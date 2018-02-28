@@ -131,17 +131,22 @@ def user_settings():
         print(request.form)
         if 'username' not in session.keys():
             return redirect(url_for('login'))
-        profile = {
+        updated_profile = {
             'bio': request.form['bio'],
             'gender': request.form['gender'],
             'location': request.form['location']
         }
-        if 'profile-pic' in request.files.keys():
-            profile_pic = files.upload_file(request.files['profile_pic'])
-            profile['profile_pic'] = profile_pic
+        if 'profile_pic' in request.files.keys():
+            if request.files['profile_pic'].filename == '':
+                if accounts.account_details(session['username'].lower())['profile']['profile_pic']:
+                    profile_pic = accounts.account_details(session['username'].lower())['profile']['profile_pic']
+                    updated_profile['profile_pic'] = profile_pic
+            else:
+                profile_pic = files.upload_file(request.files['profile_pic'])
+                updated_profile['profile_pic'] = profile_pic
         accounts.set_theme(session['username'].lower(), request.form['theme'])
         username = session['username']
-        accounts.update_profile(username, profile)
+        accounts.update_profile(username, updated_profile)
         return redirect(request.referrer)
 
 
@@ -225,7 +230,7 @@ def unlike_post(post_id):
 @app.route("/files/<oid>", methods=['GET'])
 def get_file(oid):
     fl = files.get_file(oid)
-    if not fl: return "File not found"
+    if not fl: return abort(404)
     response = make_response(fl.read())
     response.mimetype = fl.content_type
     return response
