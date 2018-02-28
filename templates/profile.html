@@ -3,6 +3,9 @@
 {% block content %}
     <div class="container">
         <div class="jumbotron">
+            {% if user.profile.profile_pic %}
+                <img src="/files/{{ user.profile.profile_pic }}" class="rounded float-left" style="margin-right: 24px; max-height: 100px;"/>
+            {% endif %}
             <h1>{% if user.verified %} <i class="fas fa-shield-check" alt="Verified"></i> {% endif %}{{ user.displayname }} <small>on Tweeder</small></h1>
             <h2>
                 {% if user.profile.bio %}
@@ -11,6 +14,7 @@
                 Tweeder user since 1984
                 {% endif %}
             </h2>
+            <div style="clear:both"></div>
         </div>
 
         <div class="row">

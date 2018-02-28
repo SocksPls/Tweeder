@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from backend import accounts, timeline
+from flask import Flask, render_template, request, redirect, url_for, session, make_response, abort
+from backend import accounts, timeline, files
 
 app = Flask(__name__)
 app.secret_key = "eVZ4EmVK70iETb03KqDAXV5sBHb3T73t"
@@ -127,16 +127,26 @@ def user_settings():
         else:
             return redirect(url_for('login'))
     elif request.method == "POST":
+        print(request.files)
+        print(request.form)
         if 'username' not in session.keys():
             return redirect(url_for('login'))
-        profile = {
+        updated_profile = {
             'bio': request.form['bio'],
             'gender': request.form['gender'],
             'location': request.form['location']
         }
+        if 'profile_pic' in request.files.keys():
+            if request.files['profile_pic'].filename == '':
+                if accounts.account_details(session['username'].lower())['profile']['profile_pic']:
+                    profile_pic = accounts.account_details(session['username'].lower())['profile']['profile_pic']
+                    updated_profile['profile_pic'] = profile_pic
+            else:
+                profile_pic = files.upload_file(request.files['profile_pic'])
+                updated_profile['profile_pic'] = profile_pic
         accounts.set_theme(session['username'].lower(), request.form['theme'])
         username = session['username']
-        accounts.update_profile(username, profile)
+        accounts.update_profile(username, updated_profile)
         return redirect(request.referrer)
 
 
@@ -215,6 +225,16 @@ def unlike_post(post_id):
         return redirect(request.referrer)
     elif request.method == "GET":
         pass
+
+
+@app.route("/files/<oid>", methods=['GET'])
+def get_file(oid):
+    fl = files.get_file(oid)
+    if not fl: return abort(404)
+    response = make_response(fl.read())
+    response.mimetype = fl.content_type
+    return response
+
 
 if __name__ == '__main__':
     app.run(host="127.0.0.1", debug=True)
