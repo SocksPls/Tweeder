@@ -11,10 +11,10 @@ def post_status(username, content, private=False, replyTo=False, location=False)
     currentTimeDate = datetime.datetime.now()
     account_object = accounts_db.find_one({'username': username.lower()})
     accounts_mentioned = []
-    for word in content:
+    for word in content.split():
         if word.startswith("@"):
             if accounts_db.find({'username': username.lower()}).count() > 0:
-                accounts_mentioned.append(word[1:])
+                accounts_mentioned.append(word[1:].lower())
 
     status = {
         'isRepost': False,
@@ -27,6 +27,7 @@ def post_status(username, content, private=False, replyTo=False, location=False)
         'replies': [],
         'replyTo': ObjectId(replyTo) if replyTo else False,
         'hashtags': [x for x in content.split() if x.startswith("#")],
+        'mentions': accounts_mentioned,
         'location': False or location,
         'private': False or private,
 
@@ -95,3 +96,7 @@ def unlike_post(post_id, user):
     if timeline_db.find_one({"_id": ObjectId(post_id), "likes": user}):
         timeline_db.update_one({"_id": ObjectId(post_id)},
                                {"$pull": {"likes": user.lower()}})
+
+
+def get_mentions(username):
+    return timeline_db.find({"mentions": username.lower()}).sort('timePosted', pymongo.DESCENDING)

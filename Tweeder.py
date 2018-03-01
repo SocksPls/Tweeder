@@ -236,5 +236,15 @@ def get_file(oid):
     return response
 
 
+@app.route("/mentions", methods=["GET"])
+def mentions():
+    if 'username' not in session.keys(): return redirect(url_for('login'))
+    logged_in = session['username'].lower()
+    return render_template("mentions.html",
+                           logged_in=logged_in,
+                           theme=accounts.get_theme(session['username'].lower()),
+                           posts=timeline.get_mentions(logged_in))
+
+
 if __name__ == '__main__':
     app.run(host="127.0.0.1", debug=True)
