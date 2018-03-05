@@ -12,7 +12,7 @@ def set_theme(username, value):
 
 def get_theme(username):
     username = username.lower()
-    if "themes" in accounts_db.find_one({"username": username}).keys():
+    if "theme" in accounts_db.find_one({"username": username}).keys():
         return accounts_db.find_one({"username": username})['theme']
     else:
         set_theme(username, "default")
