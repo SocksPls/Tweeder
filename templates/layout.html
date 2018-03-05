@@ -14,29 +14,34 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 20px">
 
-            <div class="navbar-header">
-              <a class="navbar-brand" href="#">Tweeder</a>
-            </div>
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item {% block nav_timeline %}{% endblock %}"><a href="/timeline" class="nav-link"><i class="fas fa-home"></i> Timeline</a></li>
-                <li class="nav-item {% block nav_mentions %}{% endblock %}"><a href="/mentions" class="nav-link"><i class="fas fa-bell"></i> Mentions</a></li>
-                <li class="nav-item {% block nav_profile %}{% endblock %}"><a href="/profile" class="nav-link"><i class="fas fa-user"></i> My Profile</a></li>
-                <li class="nav-item {% block nav_global %}{% endblock %}"><a href="/global" class="nav-link"><i class="fas fa-globe"></i> Global Timeline</a></li>
-                <li class="nav-item {% block nav_messages %}{% endblock %}"><a href="/messages" class="nav-link"><i class="fas fa-envelope"></i> Messages</a></li>
-                <li class="nav-item"><a href="#" data-toggle="modal" data-target="#newPost" class="nav-link"><i class="fas fa-pencil"></i> New Post</a></li>
-            </ul>
+            <a class="navbar-brand" href="/profile">Tweeder</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-            {% if logged_in %}
-                <ul class="nav navbar-nav navbar-right">
-		    <li class="nav-item {% block nav_settings %}{% endblock %}"><a href="/settings" class="nav-link"><i class="far fa-cog"></i> Settings</a></li>
-                    <li class="nav-item"><a href="/logout" class="nav-link"><i class="far fa-sign-out"></i> Log out</a></li>
+            <div class="collapse navbar-collapse" id="navbarToggler">
+
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {% block nav_timeline %}{% endblock %}"><a href="/timeline" class="nav-link"><i class="fas fa-home"></i> Timeline</a></li>
+                    <li class="nav-item {% block nav_mentions %}{% endblock %}"><a href="/mentions" class="nav-link"><i class="fas fa-bell"></i> Mentions</a></li>
+                    <li class="nav-item {% block nav_profile %}{% endblock %}"><a href="/profile" class="nav-link"><i class="fas fa-user"></i> My Profile</a></li>
+                    <li class="nav-item {% block nav_global %}{% endblock %}"><a href="/global" class="nav-link"><i class="fas fa-globe"></i> Global Timeline</a></li>
+                    <li class="nav-item {% block nav_messages %}{% endblock %}"><a href="/messages" class="nav-link"><i class="fas fa-envelope"></i> Messages</a></li>
+                    <li class="nav-item"><a href="#" data-toggle="modal" data-target="#newPost" class="nav-link"><i class="fas fa-pencil"></i> New Post</a></li>
                 </ul>
-            {% else %}
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item"><a href="/login" class="nav-link"><i class="far fa-sign-in"></i> Log in</a></li>
-                    <li class="nav-item"><a href="/register" class="nav-link"><i class="far fa-user-plus"></i> Sign up</a></li>
-                </ul>
-            {% endif %}
+
+                {% if logged_in %}
+                    <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item {% block nav_settings %}{% endblock %}"><a href="/settings" class="nav-link"><i class="far fa-cog"></i> Settings</a></li>
+                        <li class="nav-item"><a href="/logout" class="nav-link"><i class="far fa-sign-out"></i> Log out</a></li>
+                    </ul>
+                {% else %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item"><a href="/login" class="nav-link"><i class="far fa-sign-in"></i> Log in</a></li>
+                        <li class="nav-item"><a href="/register" class="nav-link"><i class="far fa-user-plus"></i> Sign up</a></li>
+                    </ul>
+                {% endif %}
+            </div>
 
     </nav>
 
