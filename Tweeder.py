@@ -137,12 +137,11 @@ def user_settings():
             'location': request.form['location']
         }
         if 'profile_pic' in request.files.keys():
-            if request.files['profile_pic'].filename == '':
-                if accounts.account_details(session['username'].lower())['profile']['profile_pic']:
-                    profile_pic = accounts.account_details(session['username'].lower())['profile']['profile_pic']
-                    updated_profile['profile_pic'] = profile_pic
-            else:
-                profile_pic = files.upload_file(request.files['profile_pic'])
+            profile_pic = files.upload_file(request.files['profile_pic'])
+            updated_profile['profile_pic'] = profile_pic
+        else:
+            if accounts.account_details(session['username'].lower())['profile']['profile_pic']:
+                profile_pic = accounts.account_details(session['username'].lower())['profile']['profile_pic']
                 updated_profile['profile_pic'] = profile_pic
         accounts.set_theme(session['username'].lower(), request.form['theme'])
         username = session['username']

@@ -49,7 +49,7 @@ def get_profile(username):
 
 def update_profile(username, details):
     accounts_db.update_one({'username': username},
-                           {'$set': {'profile': details}})
+                           {'$set': {'profile': details}}, upsert=True)
 
 
 def validate_username(username):
