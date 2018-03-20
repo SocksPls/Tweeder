@@ -56,18 +56,27 @@ def validate_username(username):
     allowed_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
     for char in username:
         if char not in allowed_chars:
-            return False
-    return True
+            return 1
+    if len(username) > 15:
+        return 2
+    return 0
 
 
 def create_account(email, username, password):
     displayname = username
     username = username.lower()
-    if not validate_username(username):
+    if validate_username(username) == 1:
         return {
             'status': 'danger',
             'code': 6,
             'message': 'Username can only contain numbers, letters, and underscores'
+        }
+
+    if validate_username(username) == 2:
+        return {
+            'status': 'danger',
+            'code': 7,
+            'message': 'Username too long'
         }
 
     if accounts_db.find_one({'username': username}):
