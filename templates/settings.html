@@ -7,7 +7,10 @@
             <div class="form-group">
 
                 <h2>Profile Picture</h2>
-                <input type="file" name="profile_pic" size="40" class="form-control my-2">
+                {% if account.profile.profile_pic %}
+                    <img src="/files/{{ account.profile.profile_pic }}" class="rounded float-left mr-3 d-inline" style="max-height: 100px;"/>
+                {% endif %}
+                <input type="file" name="profile_pic" class="form-control my-2 d-inline">
 
                 <h2>Profile Fields</h2>
 
