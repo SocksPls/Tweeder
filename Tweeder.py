@@ -215,6 +215,7 @@ def like_post(post_id):
     elif request.method == "GET":
         pass
 
+
 @app.route("/unlike/<post_id>", methods=["GET", "POST"])
 def unlike_post(post_id):
     if 'username' not in session.keys(): return redirect(url_for('login'))
@@ -243,6 +244,22 @@ def mentions():
                            logged_in=logged_in,
                            theme=accounts.get_theme(session['username'].lower()),
                            posts=timeline.get_mentions(logged_in))
+
+
+@app.route("/editpost/<post_id>", methods=["GET", "POST"])
+def editpost(post_id):
+    if 'username' not in session.keys(): return redirect(url_for('login'))
+    logged_in = session['username']
+    post_obj = timeline.post_details(post_id)
+    print(post_obj)
+    if request.method == "GET":
+        if post_obj['poster'].lower() != logged_in:
+            return abort(403)
+        else:
+            return render_template('editpost.html', post_obj=post_obj)
+    elif request.method == "POST":
+        timeline.edit_status(post_obj['_id'], request.form['status'])
+        return redirect('/view/'+str(post_id))
 
 
 if __name__ == '__main__':

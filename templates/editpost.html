@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <div class="card-header">Editing post</div>
+            <div class="card-body">
+                <form method="POST" action="/editpost/{{ post_obj._id }}" class="input-group">
+                    <input type="text" name="status" style="margin-right: 16px;" class="form-control" value="{{ post_obj.content }}" autofocus />
+                    <input type="submit" class="btn btn-primary" value="Do Post" />
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -30,10 +30,19 @@ def post_status(username, content, private=False, replyTo=False, location=False)
         'mentions': accounts_mentioned,
         'location': False or location,
         'private': False or private,
+        'edited': False
 
     }
 
     timeline_db.insert_one(status)
+
+
+def edit_status(post_id, new_content):
+    timeline_db.update_one({"_id": ObjectId(post_id)},
+                           {"$set":
+                                {"content": new_content.replace('\n', ' ').replace('\r', ''),
+                                 "edited": True}
+                            })
 
 
 def user_posts_by_username(username):

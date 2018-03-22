@@ -4,7 +4,7 @@
     <div class="container">
         <div class="jumbotron">
             {% if user.profile.profile_pic %}
-                <img src="/files/{{ user.profile.profile_pic }}" class="rounded float-left" style="margin-right: 24px; max-height: 100px;"/>
+                <img src="/files/{{ user.profile.profile_pic }}" class="rounded float-left mr-4" style="max-height: 100px;"/>
             {% endif %}
             <h1>{% if user.verified %} <i class="fas fa-shield-check" alt="Verified"></i> {% endif %}{{ user.displayname }} <small class="text-muted">on Tweeder</small></h1>
             <h2>
@@ -21,6 +21,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 mb-3">
                 <div class="card">
                     <div class="card-header">
+                        <img src="/files/{{ user.profile.profile_pic }}" class="rounded mt-0 mr-1 img-fluid d-inline" style="max-height: 1.7rem;"/>
                         <h4 style="display: inline">{{ user.displayname }}' Profile</h4>
                         {% if following %}<form action="/unfollow/{{ user.displayname }}" method="POST" style="display: inline; float: right;"><input type="submit" value="Unfollow" class="btn btn-outline-danger btn-sm"/></form> {% else %}<form action="/follow/{{ user.displayname }}" method="POST" style="display:inline; float: right;"><input type="submit" value="Follow" class="btn btn-outline-primary btn-sm"/></form>{% endif %}
                     </div>
@@ -38,7 +39,7 @@
                     {% for post in posts if not post.hidden %}
                         <div class="card" style="word-wrap: break-word; margin-bottom: 16px; width: 100%;">
                             <div class="card-header">
-                                <b>{{ post.poster }}</b> at {{ post.timePosted.strftime('%Y-%m-%d %-H:%M') }}
+                                <b>{{ post.poster }}</b> at {{ post.timePosted.strftime('%Y-%m-%d %-H:%M') }} {% if post.edited %}<i>(Edited)</i>{% endif %}
                                 <span style="float: right">
                                     {% if logged_in|lower in post.likes %}
                                         <form style="display: inline;" method="POST" action="/unlike/{{ post._id }}"><button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-heart"></i> {{ post.likes|count }}</button></form>
@@ -46,7 +47,10 @@
                                         <form style="display: inline;" method="POST" action="/like/{{ post._id }}"><button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-heart"></i> {{ post.likes|count }}</button></form>
                                     {% endif %}
                                     <a href="/reply/{{ post._id }}" class="btn btn-primary btn-sm"><i class="far fa-reply"></i></a>
-                                    {% if logged_in == post.poster %}
+                                    {% if logged_in|lower == post.poster|lower %}
+                                        <a href="/editpost/{{ post._id }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i></a>
+                                    {% endif %}
+                                    {% if logged_in|lower == post.poster|lower %}
                                         <a href="/delete/{{ post._id }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
                                     {% endif %}
                                 </span>
