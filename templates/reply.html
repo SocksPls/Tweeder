@@ -12,7 +12,7 @@
         {% endfor %}
 
         <div class="card" style="word-wrap: break-word; margin-bottom: 16px; width: 100%;">
-            <div class="card-header">Replying to <b>{{ reply_to.poster }}</b> at {{ reply_to.timePosted.strftime('%Y-%m-%d %-H:%M') }}</div>
+            <div class="card-header">Replying to <b>{{ reply_to.poster }}</b> at {{ reply_to.timePosted.strftime('%Y-%m-%d %-H:%M') }} {% if reply_to.edited %}<i>(Edited)</i>{% endif %}</div>
             <div class="card-body">
                 {{ reply_to.content }}
             </div>
