@@ -112,7 +112,7 @@ def global_timeline():
     else: logged_in = accounts.get_display_name(session['username'])
     return render_template('global.html',
                            title="Global Timeline",
-                           logged_in=logged_in,
+                           logged_in=logged_in if logged_in else "anonymous",
                            posts=timeline.global_timeline(),
                            theme=accounts.get_theme(logged_in))
 
