@@ -32,7 +32,7 @@ def login():
     elif request.method == 'GET':
         if 'username' in session.keys():
             return redirect(url_for('logout'))
-        return render_template('login.html')
+        return render_template('login.html', title="Login")
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -55,7 +55,7 @@ def register():
     elif request.method == 'GET':
         if 'username' in session.keys():
             return redirect(url_for('logout'))
-        return render_template('register.html')
+        return render_template('register.html', title="Register")
 
 
 @app.route('/profile', methods=['GET'])
@@ -71,6 +71,7 @@ def profile(name=None):
     logged_in = accounts.get_display_name(session['username']) if 'username' in session.keys() else False
     posts = list(timeline.user_posts_by_username(name))
     return render_template('profile.html',
+                           title=accounts.get_display_name(name)+"'s profile",
                            user=accounts.account_details(name),
                            logged_in=logged_in,
                            theme=accounts.get_theme(logged_in),
@@ -99,6 +100,7 @@ def timeline_view():
         return redirect(url_for('login'))
     posts = timeline.timeline_for_user(session['username'])
     return render_template('timeline.html',
+                           title="Timeline",
                            logged_in=logged_in,
                            posts=posts,
                            theme=accounts.get_theme(logged_in))
@@ -109,6 +111,7 @@ def global_timeline():
     if 'username' not in session.keys(): logged_in=False
     else: logged_in = accounts.get_display_name(session['username'])
     return render_template('global.html',
+                           title="Global Timeline",
                            logged_in=logged_in,
                            posts=timeline.global_timeline(),
                            theme=accounts.get_theme(logged_in))
@@ -121,6 +124,7 @@ def user_settings():
             logged_in = accounts.account_details(session['username'])['displayname']
             account = accounts.account_details(session['username'])
             return render_template('settings.html',
+                                   title="Settings",
                                    logged_in=logged_in,
                                    account=account,
                                    theme=accounts.get_theme(session['username'].lower()))
@@ -165,6 +169,7 @@ def reply_to_post(post_id):
     logged_in = session['username'] if ('username' in session.keys()) else False
     if request.method == "GET":
         return render_template('reply.html',
+                               title="Reply to " + timeline.post_details(post_id)['poster'],
                                logged_in=logged_in,
                                posts=timeline.get_full_replies(post_id)[:-1],
                                reply_to=timeline.post_details(post_id),
@@ -201,6 +206,7 @@ def view_thread(post_id):
     logged_in = session['username'] if ('username' in session.keys()) else False
     posts = timeline.get_full_replies(post_id)
     return render_template('view.html',
+                           title="View Post",
                            logged_in=logged_in,
                            posts=posts)
 
@@ -241,6 +247,7 @@ def mentions():
     if 'username' not in session.keys(): return redirect(url_for('login'))
     logged_in = session['username'].lower()
     return render_template("mentions.html",
+                           title="Mentions",
                            logged_in=logged_in,
                            theme=accounts.get_theme(session['username'].lower()),
                            posts=timeline.get_mentions(logged_in))
@@ -256,7 +263,7 @@ def editpost(post_id):
         if post_obj['poster'].lower() != logged_in:
             return abort(403)
         else:
-            return render_template('editpost.html', post_obj=post_obj)
+            return render_template('editpost.html', title="Edit Post", post_obj=post_obj)
     elif request.method == "POST":
         timeline.edit_status(post_obj['_id'], request.form['status'])
         return redirect('/view/'+str(post_id))
@@ -267,7 +274,7 @@ def messages_blank():
     logged_in = session['username'] if ('username' in session.keys()) else False
     if 'username' not in session: return redirect(url_for('login'))
     if request.method == "GET":
-        return render_template('messages.html', logged_in=logged_in)
+        return render_template('messages.html', title="Messages", logged_in=logged_in)
     elif request.method == "POST":
         return redirect('/messages/'+request.form['messageuser'])
 
@@ -279,6 +286,7 @@ def messaging(user):
     if request.method == "GET":
         return render_template(
             "messages.html",
+            title="Messages",
             logged_in=logged_in,
             messaging=accounts.get_display_name(user.lower()),
             messages=messages.get_messages(logged_in, user.lower())
