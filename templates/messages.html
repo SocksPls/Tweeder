@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block nav_messages %}active{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="card mb-3">
+            <div class="card-header">
+                <form method="POST" action="/messages" class="input-group">
+                    <input type="text" name="messageuser" class="form-control mr-3" placeholder="User to message..." value="{% if messaging %}{{ messaging }}{% endif %}" />
+                    <button type="submit" class="btn btn-primary">Message user</button>
+                </form>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="card mb-3" style="word-wrap: break-word; width: 100%;">
+                    <div class="card-header"><b>{{ message.fromName }}</b> at {{ message.timeSent.strftime('%Y-%m-%d %-H:%M') }}</div>
+                    <div class="card-body">
+                        {{ message.content }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if messaging %}
+            <div class="card">
+                <div class="card-footer">
+                    <form method="POST" action="/messages/{{ messaging }}" class="input-group">
+                        <input type="text" name="message_content" class="form-control mr-3" placeholder="Write a new message to {{ messaging }}" />
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

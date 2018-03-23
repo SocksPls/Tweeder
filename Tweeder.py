@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, abort
-from backend import accounts, timeline, files
+from backend import accounts, timeline, files, messages
 
 app = Flask(__name__)
 app.secret_key = "eVZ4EmVK70iETb03KqDAXV5sBHb3T73t"
@@ -260,6 +260,36 @@ def editpost(post_id):
     elif request.method == "POST":
         timeline.edit_status(post_obj['_id'], request.form['status'])
         return redirect('/view/'+str(post_id))
+
+
+@app.route("/messages", methods=["GET", "POST"])
+def messages_blank():
+    logged_in = session['username'] if ('username' in session.keys()) else False
+    if 'username' not in session: return redirect(url_for('login'))
+    if request.method == "GET":
+        return render_template('messages.html', logged_in=logged_in)
+    elif request.method == "POST":
+        return redirect('/messages/'+request.form['messageuser'])
+
+
+@app.route("/messages/<user>", methods=["GET", "POST"])
+def messaging(user):
+    logged_in = session['username'] if ('username' in session.keys()) else False
+    if 'username' not in session: return redirect(url_for('login'))
+    if request.method == "GET":
+        return render_template(
+            "messages.html",
+            logged_in=logged_in,
+            messaging=accounts.get_display_name(user.lower()),
+            messages=messages.get_messages(logged_in, user.lower())
+        )
+    elif request.method == "POST":
+        messages.send_message(
+            accounts.get_display_name(logged_in.lower()),
+            accounts.get_display_name(user.lower()),
+            request.form['message_content']
+        )
+        return redirect(request.referrer)
 
 
 if __name__ == '__main__':
