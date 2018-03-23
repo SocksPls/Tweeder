@@ -14,7 +14,7 @@
         {% if messages %}
             {% for message in messages %}
                 <div class="card mb-3" style="word-wrap: break-word; width: 100%;">
-                    <div class="card-header"><b>{{ message.poster }}</b> at {{ message.timePosted.strftime('%Y-%m-%d %-H:%M') }}</div>
+                    <div class="card-header"><b>{{ message.fromName }}</b> at {{ message.timeSent.strftime('%Y-%m-%d %-H:%M') }}</div>
                     <div class="card-body">
                         {{ message.content }}
                     </div>

@@ -263,15 +263,17 @@ def messaging(user):
     if request.method == "GET":
         return render_template(
             "messages.html",
-            messaging=accounts.get_display_name(user),
+            logged_in=logged_in,
+            messaging=accounts.get_display_name(user.lower()),
             messages=messages.get_messages(logged_in, user.lower())
         )
     elif request.method == "POST":
         messages.send_message(
-            accounts.get_display_name(logged_in),
-            accounts.get_display_name(user),
+            accounts.get_display_name(logged_in.lower()),
+            accounts.get_display_name(user.lower()),
             request.form['message_content']
         )
+        return redirect(request.referrer)
 
 
 if __name__ == '__main__':

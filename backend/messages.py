@@ -11,13 +11,13 @@ messages_db = db.messages
 
 def send_message(msg_from, msg_to, msg_content):
     if type(msg_from) == str:
-        from_id = accounts.get_profile(msg_from)['_id']
+        from_id = accounts.account_details(msg_from.lower())['_id']
     elif type(msg_from) == ObjectId:
         from_id = msg_from
         msg_from = accounts_db.find_one({'_id': from_id})['displayname']
 
     if type(msg_to) == str:
-        to_id = accounts.get_profile(msg_to)['_id']
+        to_id = accounts.account_details(msg_to.lower())['_id']
     elif type(msg_to) == ObjectId:
         to_id = msg_to
         msg_to = accounts_db.find_one({'_id': to_id})['displayname']
@@ -51,5 +51,5 @@ def get_messages(user1, user2):
                 "to"  : user1_id
             }
         ]}
-    ).sort('timeSent', pymongo.DESCENDING)
+    ).sort('timeSent', pymongo.ASCENDING)
     return messages
