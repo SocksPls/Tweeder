@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response, abort
-from backend import accounts, timeline, files
+from backend import accounts, timeline, files, messages
 
 app = Flask(__name__)
 app.secret_key = "eVZ4EmVK70iETb03KqDAXV5sBHb3T73t"
@@ -215,6 +215,7 @@ def like_post(post_id):
     elif request.method == "GET":
         pass
 
+
 @app.route("/unlike/<post_id>", methods=["GET", "POST"])
 def unlike_post(post_id):
     if 'username' not in session.keys(): return redirect(url_for('login'))
@@ -243,6 +244,34 @@ def mentions():
                            logged_in=logged_in,
                            theme=accounts.get_theme(session['username'].lower()),
                            posts=timeline.get_mentions(logged_in))
+
+
+@app.route("/messages", methods=["GET", "POST"])
+def messages_blank():
+    logged_in = session['username'] if ('username' in session.keys()) else False
+    if 'username' not in session: return redirect(url_for('login'))
+    if request.method == "GET":
+        return render_template('messages.html', logged_in=logged_in)
+    elif request.method == "POST":
+        return redirect('/messages/'+request.form['messageuser'])
+
+
+@app.route("/messages/<user>", methods=["GET", "POST"])
+def messaging(user):
+    logged_in = session['username'] if ('username' in session.keys()) else False
+    if 'username' not in session: return redirect(url_for('login'))
+    if request.method == "GET":
+        return render_template(
+            "messages.html",
+            messaging=accounts.get_display_name(user),
+            messages=messages.get_messages(logged_in, user.lower())
+        )
+    elif request.method == "POST":
+        messages.send_message(
+            accounts.get_display_name(logged_in),
+            accounts.get_display_name(user),
+            request.form['message_content']
+        )
 
 
 if __name__ == '__main__':

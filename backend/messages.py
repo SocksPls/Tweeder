@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from backend import accounts
-import datetime
+import datetime, pymongo
 
 client = MongoClient()
 db = client.tweeder
@@ -34,3 +34,22 @@ def send_message(msg_from, msg_to, msg_content):
     }
 
     messages_db.insert_one(message)
+
+
+def get_messages(user1, user2):
+    user1_id = accounts_db.find_one({"username": user1.lower()})['_id']
+    user2_id = accounts_db.find_one({"username": user2.lower()})['_id']
+
+    messages = messages_db.find(
+        {"$or": [
+            {
+                "from": user1_id,
+                "to"  : user2_id
+            },
+            {
+                "from": user2_id,
+                "to"  : user1_id
+            }
+        ]}
+    ).sort('timeSent', pymongo.DESCENDING)
+    return messages
