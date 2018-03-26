@@ -21,7 +21,9 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 mb-3">
                 <div class="card">
                     <div class="card-header">
-                        <img src="/files/{{ user.profile.profile_pic }}" class="rounded mt-0 mr-1 img-fluid d-inline" style="max-height: 1.7rem;"/>
+                        {% if user.profile.profile_pic %}
+                            <img src="/files/{{ user.profile.profile_pic }}" class="rounded mt-0 mr-1 img-fluid d-inline" style="max-height: 1.7rem;"/>
+                        {% endif %}
                         <h4 style="display: inline">{{ user.displayname }}' Profile</h4>
                         {% if following %}<form action="/unfollow/{{ user.displayname }}" method="POST" style="display: inline; float: right;"><input type="submit" value="Unfollow" class="btn btn-outline-danger btn-sm"/></form> {% else %}<form action="/follow/{{ user.displayname }}" method="POST" style="display:inline; float: right;"><input type="submit" value="Follow" class="btn btn-outline-primary btn-sm"/></form>{% endif %}
                     </div>
