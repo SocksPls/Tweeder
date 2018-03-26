@@ -10,6 +10,9 @@
                 <a href="/login" class="btn btn-outline-primary" style="float:right;">Have an account?</a>
                 <form method="POST" action="/register" class="form-group">
                     <input name="username" type="text" class="form-control" style="margin-bottom: 12px; margin-top: 12px; height:45px;" tabindex="1" placeholder="Username" />
+                    <small id="usernameHelpBlock" class="form-text text-muted">
+                        Your username must be under 15 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+                    </small>
                     <input name="email" type="text" class="form-control" style="margin-bottom: 12px; margin-top: 12px; height:45px;" tabindex="2" placeholder="Email address" />
                     <input name="password" type="password" class="form-control" style="margin-bottom: 12px; height:45px;" tabindex="3" placeholder="Password" />
                     <input name="confirm-password" type="password" class="form-control" style="margin-bottom: 12px; height:45px;" tabindex="4" placeholder="Confirm Password" />
