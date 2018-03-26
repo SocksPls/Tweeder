@@ -2,6 +2,12 @@
 {% block nav_settings %}active{% endblock %}
 {% block content %}
     <div class="container">
+        {% if saved %}
+            <div class="alert alert-success alert-dismissable fade show">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <b>Success!</b> Your settings have been saved
+            </div>
+        {% endif %}
         <h1>Settings for {{ logged_in }}</h1><hr />
         <form method="POST" action="/settings" class="col-lg-6" enctype="multipart/form-data">
             <div class="form-group">
@@ -28,12 +34,24 @@
                     <input type="text" name="location" class="form-control" placeholder="Location" aria-describedby="basic-addon1" value="{{ account.profile.location }}">
                 </div>
 
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1"><i class="far fa-fw fa-transgender-alt"></i></span>
+                <div class="form-group row">
+                    <label for="colFormLabel" class="col-sm-2 col-form-label col-form-label">Gender</label>
+                    <div class="col-sm-10">
+                        <div class="custom-control custom-radio custom-control-inline mt-2">
+                            <input type="radio" id="genderInline1" name="gender" value="Male" class="custom-control-input" {% if account.profile.gender=="Male" %}checked{% endif %}>
+                            <label class="custom-control-label" for="genderInline1">Male</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline mt-2">
+                            <input type="radio" id="genderInline2" name="gender" value="Female" class="custom-control-input" {% if account.profile.gender=="Female" %}checked{% endif %}>
+                            <label class="custom-control-label" for="genderInline2">Female</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline mt-2">
+                            <input type="radio" id="genderInline3" name="gender" class="custom-control-input" {% if account.profile.gender!="Female" and account.profile.gender!="Male" %}checked{% endif %}>
+                            <label class="custom-control-label" for="genderInline3">Other</label>
+                        </div>
                     </div>
-                    <input type="text" name="gender" class="form-control" placeholder="Gender" aria-describedby="basic-addon1" value="{{ account.profile.gender }}">
                 </div>
+
 
                 <h2>Site Theme</h2>
 

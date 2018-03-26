@@ -119,16 +119,16 @@ def global_timeline():
 
 @app.route('/settings', methods=['GET', 'POST'])
 def user_settings():
+    if 'username' in session.keys():
+        logged_in = accounts.account_details(session['username'])['displayname']
+        account = accounts.account_details(session['username'])
+    else: redirect(url_for('login'))
     if request.method == "GET":
-        if 'username' in session.keys():
-            logged_in = accounts.account_details(session['username'])['displayname']
-            account = accounts.account_details(session['username'])
             return render_template('settings.html',
                                    title="Settings",
                                    logged_in=logged_in,
                                    account=account,
                                    theme=accounts.get_theme(session['username'].lower()))
-        else:
             return redirect(url_for('login'))
     elif request.method == "POST":
         print(request.files)
@@ -144,13 +144,19 @@ def user_settings():
             profile_pic = files.upload_file(request.files['profile_pic'])
             updated_profile['profile_pic'] = profile_pic
         else:
-            if accounts.account_details(session['username'].lower())['profile']['profile_pic']:
+            if 'profile_pic' in accounts.account_details(session['username'].lower())['profile'].keys():
                 profile_pic = accounts.account_details(session['username'].lower())['profile']['profile_pic']
                 updated_profile['profile_pic'] = profile_pic
         accounts.set_theme(session['username'].lower(), request.form['theme'])
         username = session['username']
         accounts.update_profile(username, updated_profile)
-        return redirect(request.referrer)
+        account = accounts.account_details(session['username'])
+        return render_template('settings.html',
+                               title="Settings",
+                               saved=True,
+                               logged_in=logged_in,
+                               account=account,
+                               theme=accounts.get_theme(session['username'].lower()))
 
 
 @app.route("/delete/<post_id>", methods=['GET'])
