@@ -39,16 +39,19 @@
                     <div class="col-sm-10">
                         <div class="custom-control custom-radio custom-control-inline mt-2">
                             <input type="radio" id="genderInline1" name="gender" value="Male" class="custom-control-input" {% if account.profile.gender=="Male" %}checked{% endif %}>
-                            <label class="custom-control-label" for="genderInline1">Male</label>
+                            <label class="custom-control-label" for="genderInline1" onclick={document.getElementById("john").style="display:none;"}>Male</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-2">
                             <input type="radio" id="genderInline2" name="gender" value="Female" class="custom-control-input" {% if account.profile.gender=="Female" %}checked{% endif %}>
-                            <label class="custom-control-label" for="genderInline2">Female</label>
+                            <label class="custom-control-label" for="genderInline2" onclick={document.getElementById("john").style="display:none;"}>Female</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline mt-2">
                             <input type="radio" id="genderInline3" name="gender" value="Non-Binary" class="custom-control-input" {% if account.profile.gender!="Female" and account.profile.gender!="Male" %}checked{% endif %}>
-                            <label class="custom-control-label" for="genderInline3">Other</label>
+                            <label class="custom-control-label" for="genderInline3" onclick={document.getElementById("john").style="display:block;"}>Other</label>
                         </div>
+                    <input type="text" id="john" style="display:none;" name="location" class="form-control mt-2" placeholder="Gender" aria-describedby="basic-addon1" value="{{ account.profile.gender }}">
+
+
                     </div>
                 </div>
 
