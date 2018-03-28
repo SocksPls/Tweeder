@@ -76,6 +76,7 @@ def profile(name=None):
                            logged_in=logged_in,
                            theme=accounts.get_theme(logged_in),
                            following=accounts.is_following(logged_in, name),
+                           followers=accounts.get_followers(name),
                            posts=posts)
 
 

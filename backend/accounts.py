@@ -55,7 +55,10 @@ def update_profile(username, details):
 def get_followers(username):
     if not account_exists(username):
         return False
-    return accounts_db.find({"following": account_details(username)['_id']})
+    followers = []
+    for follower in accounts_db.find({"following": account_details(username)['_id']}):
+        followers.append(follower['_id'])
+    return followers
 
 
 def validate_username(username):

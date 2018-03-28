@@ -29,7 +29,8 @@
                     </div>
                     <div class="card-body">
                         {{ posts|count }} Posts <br />
-                        {{ user.following|count }} Following
+                        {{ user.following|count }} Following <br />
+                        {{ followers|count }} Followers
                         <hr />
                         {% if user.profile.location %} <i class="far fa-fw fa-map-marker"></i> {{ user.profile.location }} <br>{% endif %}
                         {% if user.profile.gender %} <i class="far fa-fw fa-transgender-alt"></i> {{ user.profile.gender }} {% endif %}
