@@ -149,6 +149,11 @@ def user_settings():
                 profile_pic = accounts.account_details(session['username'].lower())['profile']['profile_pic']
                 updated_profile['profile_pic'] = profile_pic
         accounts.set_theme(session['username'].lower(), request.form['theme'])
+
+        if request.form['gender'] == "Non-Binary":
+            updated_profile['gender'] = request.form['gender-custom']
+        print(updated_profile)
+
         username = session['username']
         accounts.update_profile(username, updated_profile)
         account = accounts.account_details(session['username'])
