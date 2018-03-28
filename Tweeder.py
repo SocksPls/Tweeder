@@ -281,7 +281,7 @@ def messages_blank():
     logged_in = session['username'] if ('username' in session.keys()) else False
     if 'username' not in session: return redirect(url_for('login'))
     if request.method == "GET":
-        return render_template('messages.html', title="Messages", logged_in=logged_in)
+        return render_template('messages.html', title="Messages", logged_in=logged_in, theme=accounts.get_theme(logged_in))
     elif request.method == "POST":
         return redirect('/messages/'+request.form['messageuser'])
 
@@ -296,7 +296,8 @@ def messaging(user):
             title="Messages",
             logged_in=logged_in,
             messaging=accounts.get_display_name(user.lower()),
-            messages=messages.get_messages(logged_in, user.lower())
+            messages=messages.get_messages(logged_in, user.lower()),
+            theme=accounts.get_theme(logged_in)
         )
     elif request.method == "POST":
         messages.send_message(
