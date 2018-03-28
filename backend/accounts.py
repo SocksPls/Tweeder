@@ -52,6 +52,12 @@ def update_profile(username, details):
                            {'$set': {'profile': details}}, upsert=True)
 
 
+def get_followers(username):
+    if not account_exists(username):
+        return False
+    return accounts_db.find({"following": account_details(username)['_id']})
+
+
 def validate_username(username):
     allowed_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_"
     for char in username:
