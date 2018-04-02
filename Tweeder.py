@@ -143,7 +143,12 @@ def user_settings():
         }
         if 'profile_pic' in request.files.keys():
             profile_pic = files.upload_file(request.files['profile_pic'])
-            updated_profile['profile_pic'] = profile_pic
+            if request.files['profile_pic'].content_type in ['image/jpg', 'image/jpeg', 'image/png']:
+                updated_profile['profile_pic'] = profile_pic
+            else:
+                if 'profile_pic' in accounts.account_details(session['username'].lower())['profile'].keys():
+                    profile_pic = accounts.account_details(session['username'].lower())['profile']['profile_pic']
+                    updated_profile['profile_pic'] = profile_pic
         else:
             if 'profile_pic' in accounts.account_details(session['username'].lower())['profile'].keys():
                 profile_pic = accounts.account_details(session['username'].lower())['profile']['profile_pic']
