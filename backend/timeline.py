@@ -8,6 +8,9 @@ timeline_db = db.statuses
 
 
 def post_status(username, content, private=False, replyTo=False, location=False):
+    if not content: # Don't let people post blank posts
+        return
+
     currentTimeDate = datetime.datetime.now()
     account_object = accounts_db.find_one({'username': username.lower()})
     accounts_mentioned = []
