@@ -138,6 +138,8 @@ def create_account(email, username, password):
             'theme': 'default',
         })
 
+        follow(username, username)
+
         return {
             'status': 'success',
             'code': 0,
