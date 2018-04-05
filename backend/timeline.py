@@ -8,7 +8,7 @@ timeline_db = db.statuses
 
 
 def post_status(username, content, private=False, replyTo=False, location=False):
-    if not content: # Don't let people post blank posts
+    if not content:  # Don't let people post blank posts
         return
 
     currentTimeDate = datetime.datetime.now()
@@ -29,7 +29,7 @@ def post_status(username, content, private=False, replyTo=False, location=False)
         'reposts': [],
         'replies': [],
         'replyTo': ObjectId(replyTo) if replyTo else False,
-        'hashtags': [x for x in content.split() if x.startswith("#")],
+        'hashtags': [x[1:] for x in content.split() if x.startswith("#")],
         'mentions': accounts_mentioned,
         'location': False or location,
         'private': False or private,
@@ -112,6 +112,10 @@ def unlike_post(post_id, user):
 
 def get_mentions(username):
     return timeline_db.find({"mentions": username.lower()}).sort('timePosted', pymongo.DESCENDING)
+
+
+def find_posts_by_hashtag(tag):
+    return timeline_db.find({'hashtags': tag})
 
 
 def post_details(post_id):

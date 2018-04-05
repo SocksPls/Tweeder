@@ -323,6 +323,16 @@ def messaging(user):
         return redirect(request.referrer)
 
 
+@app.route('/tag/<tagname>', methods=['GET'])
+def findtag(tagname):
+    logged_in = session['username'] if ('username' in session.keys()) else False
+    return render_template('timeline.html',
+                           title=str("#" + tagname),
+                           logged_in=logged_in,
+                           posts=timeline.find_posts_by_hashtag(tagname),
+                           theme=accounts.get_theme(logged_in))
+
+
 @app.route('/pin/<post_id>', methods=['GET'])
 def pin(post_id):
     if timeline.get_poster(post_id).lower() == session['username'].lower():
