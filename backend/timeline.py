@@ -115,7 +115,7 @@ def get_mentions(username):
 
 
 def find_posts_by_hashtag(tag):
-    return timeline_db.find({'hashtags': tag})
+    return timeline_db.find({'hashtags': tag}).sort('timePosted', pymongo.DESCENDING)
 
 
 def post_details(post_id):
