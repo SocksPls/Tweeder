@@ -38,12 +38,50 @@
                 </div>
             </div>
             <div class="col-xs-12 col-md-12 col-lg-8" style="float: right;">
+                {% if pinned %}
+                    <div class="card" style="word-wrap: break-word; margin-bottom: 16px; width: 100%;">
+                        <div class="card-header">
+                            <b><i class="fas fa-thumbtack"></i> <a href="/profile/{{ pinned.poster }}">{{ pinned.poster }}</a></b> at {{ pinned.timePosted.strftime('%Y-%m-%d %-H:%M') }} {% if pinned.edited %}<i>(Edited)</i>{% endif %}
+                            <span style="float: right">
+                                {% if logged_in|lower == pinned.poster|lower %}
+                                    {% if user.pinned == pinned._id %}
+                                        <a href="/unpin/{{ pinned._id }}" class="btn btn-primary btn-sm"><i class="far fa-thumbtack" data-fa-transform="rotate-45"></i></a>
+                                    {% else %}
+                                         <a href="/pin/{{ pinned._id }}" class="btn btn-outline-primary btn-sm"><i class="far fa-thumbtack" data-fa-transform="rotate-45"></i></a>
+                                    {% endif %}
+                                {% endif %}
+                                {% if logged_in|lower in pinned.likes %}
+                                    <form style="display: inline;" method="POST" action="/unlike/{{ pinned._id }}"><button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-heart"></i> {{ pinned.likes|count }}</button></form>
+                                {% else %}
+                                    <form style="display: inline;" method="POST" action="/like/{{ pinned._id }}"><button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-heart"></i> {{ pinned.likes|count }}</button></form>
+                                {% endif %}
+                                <a href="/reply/{{ pinned._id }}" class="btn btn-primary btn-sm"><i class="far fa-reply"></i></a>
+                                {% if logged_in|lower == pinned.poster|lower %}
+                                    <a href="/editpost/{{ pinned._id }}" class="btn btn-primary btn-sm"><i class="far fa-edit"></i></a>
+                                {% endif %}
+                                {% if logged_in|lower == pinned.poster|lower %}
+                                    <a href="/delete/{{ pinned._id }}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            {{ pinned.content }}
+                        </div>
+                    </div>
+                {% endif %}
                 {% if posts %}
                     {% for post in posts if not post.hidden %}
                         <div class="card" style="word-wrap: break-word; margin-bottom: 16px; width: 100%;">
                             <div class="card-header">
                                 <b><a href="/profile/{{ post.poster }}">{{ post.poster }}</a></b> at {{ post.timePosted.strftime('%Y-%m-%d %-H:%M') }} {% if post.edited %}<i>(Edited)</i>{% endif %}
                                 <span style="float: right">
+                                    {% if logged_in|lower == post.poster|lower %}
+                                        {% if user.pinned == post._id %}
+                                            <a href="/unpin/{{ post._id }}" class="btn btn-primary btn-sm"><i class="far fa-thumbtack" data-fa-transform="rotate-45"></i></a>
+                                        {% else %}
+                                             <a href="/pin/{{ post._id }}" class="btn btn-outline-primary btn-sm"><i class="far fa-thumbtack" data-fa-transform="rotate-45"></i></a>
+                                        {% endif %}
+                                    {% endif %}
                                     {% if logged_in|lower in post.likes %}
                                         <form style="display: inline;" method="POST" action="/unlike/{{ post._id }}"><button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-heart"></i> {{ post.likes|count }}</button></form>
                                     {% else %}

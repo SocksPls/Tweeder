@@ -70,6 +70,10 @@ def profile(name=None):
     name = name.lower()
     logged_in = accounts.get_display_name(session['username']) if 'username' in session.keys() else False
     posts = list(timeline.user_posts_by_username(name))
+    if 'pinned' in accounts.account_details(name).keys():
+        pinned = timeline.post_details(accounts.account_details(name)['pinned'])
+    else:
+        pinned=False
     return render_template('profile.html',
                            title=accounts.get_display_name(name)+"'s profile",
                            user=accounts.account_details(name),
@@ -77,7 +81,8 @@ def profile(name=None):
                            theme=accounts.get_theme(logged_in),
                            following=accounts.is_following(logged_in, name),
                            followers=accounts.get_followers(name),
-                           posts=posts)
+                           posts=posts,
+                           pinned=pinned)
 
 
 @app.route('/logout')
@@ -316,6 +321,20 @@ def messaging(user):
             request.form['message_content']
         )
         return redirect(request.referrer)
+
+
+@app.route('/pin/<post_id>', methods=['GET'])
+def pin(post_id):
+    if timeline.get_poster(post_id).lower() == session['username'].lower():
+        accounts.set_pinned(session['username'], post_id)
+    return redirect(request.referrer)
+
+
+@app.route('/unpin/<post_id>', methods=['GET'])
+def unpin(post_id):
+    if timeline.get_poster(post_id).lower() == session['username'].lower():
+        accounts.unset_pinned(session['username'], post_id)
+    return redirect(request.referrer)
 
 
 if __name__ == '__main__':

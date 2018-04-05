@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 import bcrypt
+from bson.objectid import ObjectId
 
 client = MongoClient()
 accounts_db = client.tweeder.accounts
@@ -50,6 +51,20 @@ def get_profile(username):
 def update_profile(username, details):
     accounts_db.update_one({'username': username},
                            {'$set': {'profile': details}}, upsert=True)
+
+
+def set_pinned(username, post_id):
+    post_id = ObjectId(post_id)
+    accounts_db.update_one({'username': username},
+                           {'$set': {'pinned': post_id}}, upsert=True)
+
+
+def unset_pinned(username, post_id):
+    username = username.lower()
+    post_id = ObjectId(post_id)
+    if accounts_db.find_one({'username': username})['pinned'] == post_id:
+        accounts_db.update_one({'username': username},
+                               {'$set': {'pinned': None}}, upsert=True)
 
 
 def get_followers(username):

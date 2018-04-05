@@ -112,3 +112,7 @@ def unlike_post(post_id, user):
 
 def get_mentions(username):
     return timeline_db.find({"mentions": username.lower()}).sort('timePosted', pymongo.DESCENDING)
+
+
+def post_details(post_id):
+    return timeline_db.find_one({'_id': ObjectId(post_id)})
