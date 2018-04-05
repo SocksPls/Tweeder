@@ -323,14 +323,19 @@ def messaging(user):
         return redirect(request.referrer)
 
 
+@app.route('/tag', methods=['POST'])
 @app.route('/tag/<tagname>', methods=['GET'])
-def findtag(tagname):
+def findtag(tagname=None):
     logged_in = session['username'] if ('username' in session.keys()) else False
-    return render_template('timeline.html',
-                           title=str("#" + tagname),
-                           logged_in=logged_in,
-                           posts=timeline.find_posts_by_hashtag(tagname),
-                           theme=accounts.get_theme(logged_in))
+
+    if request.method == 'GET':
+        return render_template('timeline.html',
+                               title=str("#" + tagname),
+                               logged_in=logged_in,
+                               posts=timeline.find_posts_by_hashtag(tagname),
+                               theme=accounts.get_theme(logged_in))
+    elif request.method == 'POST':
+        return redirect('/tag/'+request.form['tagname'])
 
 
 @app.route('/pin/<post_id>', methods=['GET'])
