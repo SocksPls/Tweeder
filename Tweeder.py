@@ -175,6 +175,27 @@ def user_settings():
                                theme=accounts.get_theme(session['username'].lower()))
 
 
+@app.route("/changepass", methods=['GET', 'POST'])
+def changepass():
+    logged_in = session['username'] if ('username' in session.keys()) else False
+    if not logged_in: return redirect(url_for('login'))
+    if request.method == 'GET':
+        return render_template('changepass.html', logged_in=logged_in, title="Change Password")
+    elif request.method == 'POST':
+        if request.form['new'] != request.form['confirm']:
+            return render_template('changepass.html', logged_in=logged_in, title="Change Password",
+                                   error="Passwords do not match!")
+        if request.form['new'] == '':
+            return render_template('changepass.html', logged_in=logged_in, title="Change Password",
+                                   error="New password cannot be blank!")
+        if accounts.change_password(logged_in, request.form['current'], request.form['new']):
+            return render_template('changepass.html', logged_in=logged_in, title="Change Password",
+                                   error="Old password was incorrect!")
+        else:
+            return render_template('changepass.html', logged_in=logged_in, title="Change Password",
+                                   success="Password changed successfully!")
+
+
 @app.route("/delete/<post_id>", methods=['GET'])
 def delete_post(post_id):
     if 'username' not in session.keys(): return redirect(url_for('login'))

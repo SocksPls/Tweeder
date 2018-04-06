@@ -86,6 +86,17 @@ def validate_username(username):
     return 0
 
 
+def change_password(username, oldpass, newpass):
+    username = username.lower()
+    hashed_password = account_details(username)['password']
+    if hashed_password != bcrypt.hashpw(str.encode(oldpass), hashed_password):
+        return 1  # Old password is incorrect
+    new_hashed = bcrypt.hashpw(str.encode(newpass), bcrypt.gensalt(14))
+    accounts_db.update_one({'username': username},
+                           {'$set': {'password': new_hashed}}, upsert=True)
+    return 0  # All good :)
+
+
 def create_account(email, username, password):
     displayname = username
     username = username.lower()
