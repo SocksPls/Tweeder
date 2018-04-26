@@ -135,7 +135,6 @@ def user_settings():
                                    logged_in=logged_in,
                                    account=account,
                                    theme=accounts.get_theme(session['username'].lower()))
-            return redirect(url_for('login'))
     elif request.method == "POST":
         print(request.files)
         print(request.form)

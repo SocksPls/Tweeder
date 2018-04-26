@@ -34,7 +34,6 @@ def post_status(username, content, private=False, replyTo=False, location=False)
         'location': False or location,
         'private': False or private,
         'edited': False
-
     }
 
     timeline_db.insert_one(status)
